@@ -43,7 +43,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/comment/edit/{comment}", methods={"POST"})
      */
-    public function editComment(Request $request, Comment $comment)
+    public function editComment(Request $request, Comment $comment, SerializerInterface $serializer)
     {
         $form = $this->createForm(CommentType::class, $comment);
         $data = json_decode($request->getContent(), true);
@@ -51,9 +51,13 @@ class CommentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager();
+            $comment->setData($data);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->json('change comment', 200);
+
+            $editComment = $serializer->serialize($comment, 'json', ['groups' => ['comment_edit']]);
+
+            return JsonResponse::fromJsonString($editComment);
         }
 
         return $this->json('error', 400);

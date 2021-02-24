@@ -45,7 +45,6 @@ class PostController extends AbstractController
             $em->flush();
 
             return $this->json($post, 200);
-
         }
 
         return $this->json('error', 400);
@@ -62,10 +61,14 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager();
+            $data['user'] = $this->getUser();
+            $post->setData($data);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            return $this->json('change post', 200);
+            $editPost = $serializer->serialize($post, 'json', ['groups' => ['post_edit']]);
+
+            return JsonResponse::fromJsonString($editPost);
         }
 
         return $this->json('error', 400);

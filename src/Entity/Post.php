@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,6 +29,7 @@ class Post
      *
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @Groups("post_edit")
      */
     private $title;
 
@@ -39,6 +39,7 @@ class Post
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="message please")
      * @Assert\Length(min=10, minMessage="more 5")
+     * @Groups("post_edit")
      */
     private $content;
 

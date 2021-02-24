@@ -42,7 +42,7 @@ class Comment
      *     max=10000,
      *     maxMessage="comment is long"
      * )
-     * @Groups("comment")
+     * @Groups({"comment", "comment_edit"})
      */
     private $massage;
 
@@ -90,6 +90,11 @@ class Comment
     public function setPost(Post $post): void
     {
         $this->post = $post;
+    }
+
+    public function setData($data)
+    {
+        $this->setMassage($data['massage']);
     }
 
 }
